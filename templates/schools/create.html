@@ -1,15 +1,18 @@
 {% extends '_base.html' %}
 
 {% block content %}
+{% load crispy_forms_tags %}
 
-{% if messages %}
-<div class="alert alert-danger" role="alert">
-  {% for message in messages %}
-    {{message}}
-  {% endfor %}
-</div>
-{% endif %}
-        <form action="?" method="post">
+
+
+    <form action="?" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="form-group">
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+        </form>
+        <!--<form action="?" method="post">
             {% csrf_token %}
             <div class="form-group">
                 <label for="email">Email address:</label>
@@ -31,5 +34,5 @@
             <div class="form-group">
                 <button class="btn btn-default" type="submit">Submit</button>
             </div>
-        </form>
+        </form>-->
 {% endblock content %}
