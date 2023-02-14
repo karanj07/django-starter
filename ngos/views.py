@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .forms import SchoolForm, SchoolModelForm
 from .models import School
 from django.views import View
+from django.contrib import messages #import messages
 # Create your views here.
 
 
@@ -33,8 +34,10 @@ class CreateSchool(View):
         form = SchoolModelForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Request added successfully.')
         else:
-            pass
+            messages.error(request, 'Invalid form submission.')
+            messages.error(request, form.errors)
 
         return render(request, "schools/create.html", context)
 
