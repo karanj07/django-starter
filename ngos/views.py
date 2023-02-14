@@ -3,6 +3,10 @@ from .forms import SchoolForm, SchoolModelForm
 from .models import School
 from django.views import View
 from django.contrib import messages #import messages
+
+from django.core.mail import send_mail
+from django.conf import settings
+
 # Create your views here.
 
 
@@ -34,6 +38,15 @@ class CreateSchool(View):
         form = SchoolModelForm(request.POST)
         if form.is_valid():
             form.save()
+
+            mail_response = send_mail('New School Form',
+            'This is some test school message', 
+            settings.EMAIL_HOST_USER,
+            ['karanj89@gmail.com'], 
+            fail_silently=False)
+            if mail_response == 1:
+                messages.success(request, 'Mail sent successfully.')
+
             messages.success(request, 'Request added successfully.')
         else:
             messages.error(request, 'Invalid form submission.')
