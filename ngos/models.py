@@ -6,12 +6,10 @@ from ckeditor.fields import RichTextField
 
 class School(models.Model):
 	name = models.CharField(max_length=200)
-#	img = models.ImageField(upload_to='pics')
 	featured_image = models.ImageField(null=True, blank=True, upload_to="schools/")
 	description = RichTextField()
 	address = models.CharField(max_length=500)
-	# blank=true - field is not required
-	summary = RichTextField(default="", blank=True)
+	summary = RichTextField(default="", blank=True) # blank=true - field is not required
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 #	price = models.IntegerField(default=0)
