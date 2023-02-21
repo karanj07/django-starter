@@ -1,6 +1,8 @@
 from pathlib import Path
 import os
 from django.contrib.messages import constants as messages
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,11 +26,13 @@ INSTALLED_APPS = [
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    
     # Third-party
     "allauth",
     "allauth.account",
     "crispy_forms",
     "debug_toolbar",
+    
     # Local
     "accounts",
     "pages",
@@ -51,12 +55,16 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
+
 # URLS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
 ROOT_URLCONF = "django_project.urls"
 # https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
 WSGI_APPLICATION = "django_project.wsgi.application"
+
+
 
 # TEMPLATES
 # ------------------------------------------------------------------------------
@@ -77,14 +85,14 @@ TEMPLATES = [
     },
 ]
 
+
+
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
 DATABASES = {
     'default': {
-       # 'ENGINE': 'django.db.backends.sqlite3',
-       # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ngo_vk2',
         'USER': 'postgres',
@@ -114,6 +122,8 @@ DATABASES2 = {
 #     }
 # }
 
+
+
 # PASSWORDS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators
@@ -132,9 +142,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+
 # INTERNATIONALIZATION
 # ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/topics/i18n/
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#language-code
 LANGUAGE_CODE = "en-us"
 # https://docs.djangoproject.com/en/dev/ref/settings/#time-zone
@@ -150,20 +162,21 @@ USE_TZ = True
 # STATIC
 # ------------------------------------------------------------------------------
 
-# https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-#STATIC_ROOT = str(BASE_DIR.joinpath("staticfiles"))
-# https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-#STATIC_URL = "/static/"
-# https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-#STATICFILES_DIRS = [str(BASE_DIR.joinpath("static"))]
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
    os.path.join(BASE_DIR, 'static')
 ]
+# http://whitenoise.evans.io/en/stable/django.html#add-compression-and-caching-support
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+
+# EMAIL SMTP
+# ------------------------------------------------------------------------------
 
 EMAIL_HOST = 'smtp-relay.sendinblue.com'
 EMAIL_HOST_USER = 'karanj07@gmail.com'
@@ -174,7 +187,14 @@ EMAIL_USE_SSL = False
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
-# for bootstrap messages
+
+
+# DJANGO-CRISPY-FORMS CONFIGS
+# ------------------------------------------------------------------------------
+# https://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+# For Bootstrap Messages
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-secondary',
     messages.INFO: 'alert-info',
@@ -182,15 +202,6 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
-
-
-# http://whitenoise.evans.io/en/stable/django.html#add-compression-and-caching-support
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-# DJANGO-CRISPY-FORMS CONFIGS
-# ------------------------------------------------------------------------------
-# https://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
-CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
 # DJANGO-DEBUG-TOOLBAR CONFIGS
@@ -203,6 +214,8 @@ INTERNAL_IPS = ["127.0.0.1"]
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/topics/auth/customizing/#substituting-a-custom-user-model
 AUTH_USER_MODEL = "accounts.CustomUser"
+
+
 
 # DJANGO-ALLAUTH CONFIGS
 # ------------------------------------------------------------------------------
@@ -219,8 +232,14 @@ AUTHENTICATION_BACKENDS = (
 )
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
 ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
+
+ACCOUNT_FORMS = {
+    'login': 'allauth.account.forms.LoginForm',
+    'signup': 'accounts.forms.AppCustomSignupForm',
+}
